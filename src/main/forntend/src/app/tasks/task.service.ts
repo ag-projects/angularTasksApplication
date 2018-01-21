@@ -1,6 +1,6 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import "rxjs/add/operator/map";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/Observable";
 import {Task} from "./task.model";
 
@@ -8,6 +8,8 @@ import {Task} from "./task.model";
 @Injectable()
 export class TaskService {
 
+
+    onTaskAdded = new EventEmitter<Task>();
 
     constructor(private http: HttpClient) {
 
@@ -17,10 +19,16 @@ export class TaskService {
         return this.http.get<Task[]>('/api/tasks');
     }
 
-    saveTask(task: Task, checked: boolean): Observable<Task> {
+    saveTask(task: Task, checked: boolean) {
         task.completed = checked;
-        return this.http.post<Task>('/api/tasks/save', task);
+        return this.http.post('/api/tasks/save', task, {
+            headers: new HttpHeaders().set('Authorization', 'my-auth-token'),
+        });
+
     }
 
 
+    addTask(task: Task) {
+        return this.http.post('/api/task/save', task);
+    }
 }
