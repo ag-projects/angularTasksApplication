@@ -1,4 +1,9 @@
 package com.agharibi.tasks.respository;
 
-public interface TaskRepository {
+import com.agharibi.tasks.domain.Task;
+import org.springframework.data.repository.CrudRepository;
+
+public interface TaskRepository extends CrudRepository<Task, Long> {
+
+
 }
