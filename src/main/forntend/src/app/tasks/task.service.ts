@@ -17,4 +17,10 @@ export class TaskService {
         return this.http.get<Task[]>('/api/tasks');
     }
 
+    saveTask(task: Task, checked: boolean): Observable<Task> {
+        task.completed = checked;
+        return this.http.post<Task>('/api/tasks/save', task);
+    }
+
+
 }
